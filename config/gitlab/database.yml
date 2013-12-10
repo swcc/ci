@@ -9,7 +9,7 @@ production:
   pool: 10
   username: gitlab
   password: changeme
-  # host: localhost
+  host: 127.0.0.1
   # socket: /tmp/mysql.sock
 
 #

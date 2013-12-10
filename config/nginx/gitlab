@@ -7,7 +7,8 @@ upstream gitlab {
 }
 
 server {
-  listen *:80;         # e.g., listen 192.168.1.1:80; In most cases *:80 is a good idea
+  #listen *:8081;         # e.g., listen 192.168.1.1:80; In most cases *:80 is a good idea
+  listen *:80;
   server_name ci.swcc.dev;     # e.g., server_name source.example.com;
 
   server_tokens off;     # don't show the version number, a security best practice

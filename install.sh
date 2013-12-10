@@ -4,7 +4,9 @@
 export DEBIAN_FRONTEND=noninteractive
 
 # Apt update
-apt-get update > /dev/null
+apt-get update -y > /dev/null
+apt-get upgrade -y > /dev/null
+apt-get install sudo -y > /dev/null
 
 # Install tools
 apt-get install -y git curl
@@ -32,10 +34,10 @@ mysqladmin -u root password mysql
 ############
 
 # Create DB and user for GitLab
-mysql -u root -p mysql < /vagrant/config/gitlab/create_database.sql
+mysql -u root --password=mysql < /vagrant/config/gitlab/create_database.sql
 
 ## SonarQube
-mysql -u root -p mysql < /vagrant/config/sonarqube/create_database.sql
+mysql -u root --password=mysql < /vagrant/config/sonarqube/create_database.sql
 
 
 #######################
@@ -46,7 +48,7 @@ mysql -u root -p mysql < /vagrant/config/sonarqube/create_database.sql
 
 echo "deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/" >> /etc/apt/sources.list
 apt-get update -y
-apt-get install -y sonar
+apt-get install -y --force-yes sonar
 
 export SONAR_HOME=/opt/sonar
 
@@ -164,7 +166,7 @@ sudo -u git -H git clone https://github.com/gitlabhq/gitlabhq.git gitlab
 cd /home/git/gitlab
 
 # Checkout to stable release
-sudo -u git -H git checkout 6-2-stable
+sudo -u git -H git checkout 6-3-stable
 
 cd /home/git/gitlab
 
@@ -202,7 +204,7 @@ sudo -u git -H cp /vagrant/config/gitlab/application.rb config/application.rb
 
 # Configure Git global settings for git user, useful when editing via web
 # Edit user.email according to what is set in gitlab.yml
-sudo -u git -H git config --global user.name ""
+sudo -u git -H git config --global user.name "GitLab"
 sudo -u git -H git config --global user.email "gitlab@localhost"
 sudo -u git -H git config --global core.autocrlf input
 
@@ -220,7 +222,8 @@ sudo -u git -H chmod o-rwx config/database.yml
 
 cd /home/git/gitlab
 
-sudo gem install charlock_holmes --version '0.6.9.4'
+# Seems to lack this lib for now...
+apt-get install -y libpq-dev
 
 # For MySQL (note, the option says "without ... postgres")
 sudo -u git -H bundle install --deployment --without development test postgres aws
@@ -233,7 +236,7 @@ sudo -u git -H bundle install --deployment --without development test postgres a
 # sudo -u git -H bundle exec rake gitlab:setup RAILS_ENV=production
 # NEED TO TYPE YES,
 # Call the three tasks called by gitlab:setup
-bundle exec rake db:setup db:seed_fu gitlab:enable_automerge RAILS_ENV=production
+sudo -u git -H bundle exec rake db:setup db:seed_fu RAILS_ENV=production
 
 # Install Init Script
 sudo cp lib/support/init.d/gitlab /etc/init.d/gitlab
@@ -245,17 +248,21 @@ sudo update-rc.d gitlab defaults 21
 # Setup logrotate
 sudo cp lib/support/logrotate/gitlab /etc/logrotate.d/gitlab
 
-############
-# 8. Start !!
-############
-
-sudo /etc/init.d/gitlab restart
-
 ###############
-# 9. Web server
+# 8. Web server
 ###############
 
 apt-get install -y nginx
 
-sudo cp /vagrant/conf/nginx/gitlab /etc/nginx/sites-available/gitlab
+sudo cp /vagrant/config/nginx/gitlab /etc/nginx/sites-available/gitlab
 sudo ln -s /etc/nginx/sites-available/gitlab /etc/nginx/sites-enabled/gitlab
+
+sudo usermod -a -G git www-data
+sudo chmod g+rx /home/git/
+
+############
+# 9. Start !!
+############
+
+sudo /etc/init.d/nginx restart
+sudo /etc/init.d/gitlab restart
