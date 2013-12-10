@@ -9,6 +9,12 @@ apt-get update > /dev/null
 # Install tools
 apt-get install -y git curl
 
+# Backports Redis server && git for Debian squeeze
+echo "deb http://backports.debian.org/debian-backports squeeze-backports main" >> /etc/apt/sources.list
+apt-get update
+apt-get -t squeeze-backports install redis-server
+apt-get -t squeeze-backports install git
+
 ######################
 ###                ###
 ### MySQL Install  ###
@@ -137,7 +143,7 @@ sudo -u git -H git clone https://github.com/gitlabhq/gitlab-shell.git
 cd gitlab-shell
 
 # switch to right version
-sudo -u git -H git checkout v1.7.4
+sudo -u git -H git checkout v1.7.9
 
 sudo -u git -H cp /vagrant/config/gitlab/gitlab-shell-config.yml config.yml
 
@@ -196,7 +202,7 @@ sudo -u git -H cp /vagrant/config/gitlab/application.rb config/application.rb
 
 # Configure Git global settings for git user, useful when editing via web
 # Edit user.email according to what is set in gitlab.yml
-sudo -u git -H git config --global user.name "GitLab"
+sudo -u git -H git config --global user.name ""
 sudo -u git -H git config --global user.email "gitlab@localhost"
 sudo -u git -H git config --global core.autocrlf input
 
@@ -244,3 +250,12 @@ sudo cp lib/support/logrotate/gitlab /etc/logrotate.d/gitlab
 ############
 
 sudo /etc/init.d/gitlab restart
+
+###############
+# 9. Web server
+###############
+
+apt-get install -y nginx
+
+sudo cp /vagrant/conf/nginx/gitlab /etc/nginx/sites-available/gitlab
+sudo ln -s /etc/nginx/sites-available/gitlab /etc/nginx/sites-enabled/gitlab
