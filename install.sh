@@ -80,7 +80,7 @@ apt-get install -y jenkins
 /etc/init.d/jenkins start
 pushd /usr/lib/jenkins
 wget -q http://127.0.0.1:8080/jnlpJars/jenkins-cli.jar
-jenkins_plugins_to_install=(git)
+jenkins_plugins_to_install=(git gitlab-hook ruby-runtime)
 for i in ${jenkins_plugins_to_install[@]}; do
     java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin $i -deploy
 done
