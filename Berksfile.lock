@@ -1,0 +1,69 @@
+{
+  "sources": {
+    "gitlab": {
+      "locked_version": "0.6.3",
+      "git": "https://gitlab.com/gitlab-org/cookbook-gitlab.git",
+      "ref": "c7ccf8b36db4dc1a138f605f6d9c3485e6359e36"
+    },
+    "redisio": {
+      "locked_version": "1.7.0"
+    },
+    "ulimit": {
+      "locked_version": "0.3.2"
+    },
+    "ruby_build": {
+      "locked_version": "0.8.0"
+    },
+    "postgresql": {
+      "locked_version": "3.3.4"
+    },
+    "apt": {
+      "locked_version": "2.3.0"
+    },
+    "build-essential": {
+      "locked_version": "1.4.2"
+    },
+    "openssl": {
+      "locked_version": "1.1.0"
+    },
+    "mysql": {
+      "locked_version": "4.0.6"
+    },
+    "database": {
+      "locked_version": "1.5.2"
+    },
+    "aws": {
+      "locked_version": "1.0.0"
+    },
+    "xfs": {
+      "locked_version": "1.1.0"
+    },
+    "postfix": {
+      "locked_version": "3.0.4"
+    },
+    "yum": {
+      "locked_version": "2.4.4"
+    },
+    "phantomjs": {
+      "locked_version": "1.0.3"
+    },
+    "chocolatey": {
+      "locked_version": "0.0.5"
+    },
+    "powershell": {
+      "locked_version": "1.1.2"
+    },
+    "windows": {
+      "locked_version": "1.11.0"
+    },
+    "chef_handler": {
+      "locked_version": "1.1.4"
+    },
+    "magic_shell": {
+      "locked_version": "0.3.2"
+    },
+    "monit": {
+      "locked_version": "0.7.1"
+    }
+  }
+}
