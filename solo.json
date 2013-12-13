@@ -1,0 +1,15 @@
+{
+  "gitlab": {
+    "env": "production",
+    "user_uid": 1111,
+    "user_gid": 1111
+  },
+  "phantomjs": {
+    "version": "1.8.1"
+  },
+  "run_list": [
+    "recipe[apt]",
+    "recipe[postfix]",
+    "recipe[gitlab::default]"
+  ]
+}
