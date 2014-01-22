@@ -2,14 +2,24 @@
   "gitlab": {
     "env": "production",
     "user_uid": 1111,
-    "user_gid": 1111
+    "user_gid": 1111,
+    "database_adapter": "mysql",
+    "database_password": "ilovesecurity"
   },
-  "phantomjs": {
-    "version": "1.8.1"
+  "mysql": {
+    "server_root_password": "ilovesecurity",
+    "server_repl_password": "ilovesecurity",
+    "server_debian_password": "ilovesecurity"
+  },
+  "postfix": {
+    "mail_type": "client",
+    "myhostname": "mail.example.com",
+    "mydomain": "example.com",
+    "myorigin": "mail.example.com",
+    "smtp_use_tls": "no"
   },
   "run_list": [
-    "recipe[apt]",
-    "recipe[postfix]",
-    "recipe[gitlab::default]"
+    "postfix",
+    "gitlab::default"
   ]
 }
